@@ -1,0 +1,43 @@
+Welcome, everyone. Today we are reviewing Sprint 2000-26.05.04 for the Acme platform.
+Here is what we will cover. First, a high-level look at our Sprint metrics,
+then a walkthrough of the key release highlights. After that, we will move into our demo section,
+where I will introduce the work we completed in the environment.
+We will close with a deeper discussion of our metrics and a brief look at what comes next.
+Starting with metrics. The team completed 38 story points this Sprint,
+finishing 100% of the planned work. We closed 22 tickets in total, including four that carried
+over from last Sprint. Our cycle time averaged 2.1 days per ticket, which is down from 3.4 in
+the previous Sprint. We had no critical bugs raised in production this cycle, and our build
+success rate held at 97% across all pipelines, moving on to release highlights.
+The headline deliverable this Sprint was the completion of the Unified Customer Notification
+Service. This service consolidates three separate email and push handlers into a single, event-driven
+pipeline. We also shipped a redesigned order summary page, which reduces load time by roughly
+40% on mobile. On the infrastructure side, we migrated the reporting database to the
+new read replica configuration, improving dashboard query performance by six times.
+Finally, we resolved a long-standing authentication edge case that was causing intermittent session
+drop. Let us now walk through the demo. We will show the notification service in action,
+starting from an order event, and following it through to delivery on both email and mobile push.
+We will also step through the updated order summary on a mobile device so you can see the
+performance improvement firsthand. Here is that demo now. Alright, so that was the demo,
+showing our work in the environment. You saw the notification pipeline trigger correctly on a
+simulated order event, fan out to both channels, and complete end-to-end in under two seconds.
+The mobile order summary page loaded smoothly, and the layout held across the tested device sizes.
+Now let us move to the next section. I want to spend a moment on what the notification
+service demo revealed beyond the happy path. During integration testing, we discovered that
+concurrent events arriving within a 50 millisecond window were being duplicated too aggressively.
+We added a correlation identifier to the event envelope, which allows the service to distinguish
+between genuinely duplicate events and two legitimate notifications that happen to arrive
+close together. That fix is included in the build you just saw. We also observed one instance
+of a push token being stale during the demo run. The service handles that gracefully now,
+now for a closer look at the numbers behind this sprint. Our team velocity of 38 points puts us
+eight points above the rolling four sprint average of 30. The improvement is largely
+attributable to the notification service, which had been blocked on an architecture decision
+for two sprints. Once that was resolved, the work flowed quickly. Defect escape rate was zero for
+customer facing features, and one for internal tooling, which was caught during code review
+before merging. Test coverage across the changed modules sits at 83%, up from 76% last sprint,
+driven by the new end looking ahead to the next sprint. Our primary goal is shipping the
+self-service account settings redesign, which stakeholders have been waiting on since Q1.
+We will also begin the first phase of the analytics data model refactor,
+and the team has committed to closing out the remaining technical debt tickets on the payment
+service. Capacity is slightly reduced due to planned time off, so we have sized the sprint
+accordingly at 28 points. Thank you all for your time today. The full sprint report, including
+ticket details and pull request links, is available in the project documentation.
